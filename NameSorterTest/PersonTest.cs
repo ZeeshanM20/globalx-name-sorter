@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using NameSorter;
+using System;
 
 namespace NameSorterTest
 {
@@ -16,6 +17,17 @@ namespace NameSorterTest
 
             Assert.AreEqual(firstName, person.getFirstName());
             Assert.AreEqual(lastName, person.getLastName());
+        }
+
+        [Test]
+        public void Person_Incorrect_Number_Of_Names()
+        {
+            // Throws with no name
+            Assert.Throws<ArgumentException>(() => { new Person(); });
+            // Throws with only one name
+            Assert.Throws<ArgumentException>(() => { new Person("Lauchie"); });
+            // Throws with more than four names
+            Assert.Throws<ArgumentException>(() => { new Person("Hunter", "Uriah", "Mathew", "Clarke", "Lauchie"); });
         }
     }
 }

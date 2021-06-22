@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using NameSorter;
 using System.Collections.Generic;
 
@@ -21,11 +22,25 @@ namespace NameSorterTest
                 "Janet Parsons"
             };
 
-            Registry registry = new Registry();
-
-            sortedNames = registry.readFileAndCreateSortedList(fileName);
+            sortedNames = Utils.readAndCreatePersonFromList(fileName);
 
             Assert.AreEqual(sortedNamesList, sortedNames.Values);
+        }
+
+        [Test]
+        public void Util_Read_Call_With_Invalid_File_Name()
+        {
+            string fileName = "/FileNotThere";
+            Assert.Throws<ArgumentException>(() => { Utils.readAndCreatePersonFromList(fileName); ; });
+
+        }
+
+        [Test]
+        public void Util_Read_Call_With_Empty_File_Name()
+        {
+            string fileName = "";
+            Assert.Throws<ArgumentException>(() => { Utils.readAndCreatePersonFromList(fileName); ; });
+
         }
     }
 }

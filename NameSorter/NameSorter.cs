@@ -8,15 +8,16 @@ namespace NameSorter
     {
         public static void Main(string[] args)
         {
+            string writeFileName = "sorted-names-list.txt";
             SortedList<string, string> sortedNames;
+
             if (args is null)
             {
                 throw new ArgumentNullException(nameof(args));
             }
-            Registry registry = new Registry();
 
-            sortedNames = registry.readFileAndCreateSortedList(args[0]);
-            registry.createAndWriteToFile(sortedNames);
+            sortedNames = Utils.readAndCreatePersonFromList(args[0]);
+            Utils.createAndWriteToFile(sortedNames, writeFileName);
 
         }
     }

@@ -6,18 +6,27 @@ using System.Collections.Generic;
 namespace NameSorter
 {
 
-    public class Registry
+    public class Utils
     {
-        SortedList<string, string> sortedNames;
 
         // Reads names from file, creates Person objects for the names and adds them to a SortedList.
-        public SortedList<string, string> readFileAndCreateSortedList(string fileName)
+        public static SortedList<string, string> readAndCreatePersonFromList(string fileName)
         {
+            if(String.IsNullOrEmpty(fileName)) {
+                throw new ArgumentException("File name is empty");
+            }
+            string[] names;
+            SortedList<string, string> sortedNames;
             string _filePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
-            sortedNames = new SortedList<string, string>();
             _filePath += fileName;
-            string[] names = System.IO
-            .File.ReadAllLines(_filePath);
+            sortedNames = new SortedList<string, string>();
+            try
+            {
+                names = System.IO.File.ReadAllLines(_filePath);
+            } catch (IOException)
+            {
+                throw new ArgumentException("File to read, does not exist");
+            }
 
             foreach (String name in names)
             {
@@ -29,10 +38,9 @@ namespace NameSorter
         }
 
         // Writes to file "sorted-names-list.txt" from sortedNames list or creates it if not present.
-        public async void createAndWriteToFile(SortedList<string, string> sortedNames)
+        public static async void createAndWriteToFile(SortedList<string, string> sortedNames, string writeFileName)
         {
-            File.WriteAllLines("sorted-names-list.txt", sortedNames.Select(x => x.Value).ToArray());
-            using (StreamWriter file = new StreamWriter("sorted-names-list.txt"))
+            using (StreamWriter file = new StreamWriter(writeFileName))
                 foreach (var name in sortedNames)
                 {
                     Console.WriteLine(name.Value);

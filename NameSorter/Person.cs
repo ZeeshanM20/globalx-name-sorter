@@ -9,6 +9,10 @@ namespace NameSorter
 
         public Person(params string[] names)
         {
+            if (names.Length < 2 || names.Length > 4) {
+                Console.WriteLine(names.Length);
+                throw new ArgumentException("Name must contain between 2 and 4 names");
+            }
             this.names = names;
         }
 
