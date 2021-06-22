@@ -9,29 +9,26 @@ namespace NameSorter
     public class Registry
     {
         SortedList<string, string> sortedNames;
+
+        // Reads names from file, creates Person objects for the names and adds them to a SortedList.
         public SortedList<string, string> readFileAndCreateSortedList(string fileName)
         {
             string _filePath = Path.GetDirectoryName(System.AppDomain.CurrentDomain.BaseDirectory);
             sortedNames = new SortedList<string, string>();
             _filePath += fileName;
-            Console.WriteLine("Hello World" + _filePath);
             string[] names = System.IO
             .File.ReadAllLines(_filePath);
 
             foreach (String name in names)
             {
-                createPerson(name, sortedNames);
+                string[] nameArray = name.Split(' ');
+                Person person = new Person(nameArray);
+                sortedNames.Add($"{person.getLastName()} {person.getFirstName()}", $"{person.getFirstName()} {person.getLastName()}");
             }
             return sortedNames;
         }
 
-        private void createPerson(string name, SortedList<string, string> sortedNames)
-        {
-            string[] nameArray = name.Split(' ');
-            Person person = new Person(string.Join(' ', nameArray, 0, nameArray.Length - 1), nameArray[nameArray.Length - 1]);
-            sortedNames.Add(person.getLastName() + " " + person.getFirstName(), person.getFirstName() + " " + person.getLastName());
-        }
-
+        // Writes to file "sorted-names-list.txt" from sortedNames list or creates it if not present.
         public async void createAndWriteToFile(SortedList<string, string> sortedNames)
         {
             File.WriteAllLines("sorted-names-list.txt", sortedNames.Select(x => x.Value).ToArray());

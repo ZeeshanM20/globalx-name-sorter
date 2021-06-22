@@ -5,23 +5,21 @@ namespace NameSorter
 
     public class Person
     {
-        private string firstName;
-        private string lastName;
+        private string[] names;
 
-        public Person(string firstName, string lastName)
+        public Person(params string[] names)
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
+            this.names = names;
         }
 
         public string getFirstName()
         {
-            return firstName;
+            return string.Join(' ', names, 0, names.Length - 1);
         }
 
         public string getLastName()
         {
-            return lastName;
+            return names[names.Length - 1];
         }
     }
 }
